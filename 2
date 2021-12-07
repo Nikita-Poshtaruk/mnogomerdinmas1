@@ -1,0 +1,211 @@
+#include <iostream>
+#include <cstdlib>
+#include<time.h>
+using namespace std;
+ 
+const int SIZE = 30; // макс значение для функции rand();
+ 
+void common_elements_A_C(int** _array_A, int** _array_C, int _cols_A, int _rows_A,  int _cols_C, int _rows_C) {
+ 
+    int* array_common_elements = new int[(_rows_A * _cols_A) + (_rows_C * _cols_C)]{};  // общие элементы
+    int cnt = 0;
+ 
+    for (int i = 0; i < _rows_A; i++) {
+        for (int j = 0; j < _cols_A; j++) {
+            for (int z = 0; z < _rows_C; z++) {
+                for (int o = 0; o < _cols_C; o++) {
+                    if (_array_A[i][j] ==  _array_C[z][o]) {
+                        array_common_elements[cnt++] = _array_A[i][j];
+                    }
+                }
+            }
+        }
+ 
+    }
+ 
+ 
+    for (int i = 0; i < cnt; i++) {      // удаление повторяющихся элементов массива
+        for (int j = i + 1; j < cnt; j++) {
+            if (array_common_elements[i] == array_common_elements[j]) {
+                for (int k = j; k < cnt - 1; k++) {
+                    array_common_elements[k] = array_common_elements[k + 1];
+                }
+                cnt -= 1;
+                if (array_common_elements[i] == array_common_elements[j]) {
+                    j--;
+                }
+            }
+        }
+ 
+    }
+ 
+    if (array_common_elements[cnt] != 0) {
+        for (int i = 0; i < cnt; i++) {
+            cout << array_common_elements[i] << " ";
+        }
+    }
+    else cout << "Общих значений нет";
+ 
+    delete[]array_common_elements;
+}
+ 
+void unique_elements_A_B_C(int** _array_A, int** _array_B, int** _array_C, int _cols_A, int _rows_A, int _cols_B, int _rows_B, int _cols_C, int _rows_C) {
+ 
+    int* unique_elements = new int[(_rows_A * _cols_A) + (_rows_B * _cols_B) + (_rows_C * _cols_C)]{};  // массив уникальных элементов 
+    int cnt = 0;
+ 
+    for (int i = 0; i < _rows_A; i++) {
+        for (int j = 0; j < _cols_A; j++) {
+            for (int k = 0; k < _rows_B; k++) {
+                for (int l = 0; l < _cols_B; l++) {
+                    if (_array_A[i][j] != _array_B[k][l]) {
+                        unique_elements[cnt++] = _array_A[i][j];
+                    }
+                }
+            }
+        }
+    }
+ 
+    for (int i = 0; i < _rows_B; i++) {
+        for (int j = 0; j < _cols_B; j++) {
+            for (int k = 0; k < _rows_C; k++) {
+                for (int l = 0; l < _cols_C; l++) {
+                    if (_array_B[i][j] != _array_C[k][l]) {
+                        unique_elements[cnt++] = _array_B[i][j];
+                    }
+                }
+            }
+        }
+    }
+ 
+    for (int i = 0; i < _rows_A; i++) {
+        for (int j = 0; j < _cols_A; j++) {
+            for (int k = 0; k < _rows_C; k++) {
+                for (int l = 0; l < _cols_C; l++) {
+                    if (_array_A[i][j] != _array_C[k][l]) {
+                        unique_elements[cnt++] = _array_C[i][j];
+                    }
+                }
+            }
+        }
+    }
+ 
+    for (int i = 0; i < cnt; i++) {              // удаление повторяющихся элементов массива
+        for (int j = i + 1; j < cnt; j++) {
+            if (unique_elements[i] == unique_elements[j]) {
+                for (int k = j; k < cnt - 1; k++) {
+                    unique_elements[k] = unique_elements[k + 1];
+                }
+                cnt -= 1;
+                if (unique_elements[i] == unique_elements[j]) {
+                    j--;
+                }
+            }
+        }
+    }
+ 
+ 
+    for (int i = 0; i < cnt; i++) {
+        cout << unique_elements[i] << " ";
+    }
+    
+    delete[]unique_elements;
+}
+ 
+int** creation_array (int _rows, int _cols) {
+    int** array = new int* [_rows];
+    for (int i = 0; i < _rows; i++) {
+        array[i] = new int[_cols];
+    }
+ 
+    for (int i = 0; i < _rows; i++) {
+        for (int j = 0; j < _cols; j++) {
+            array[i][j] = rand() % SIZE - 10;
+        }
+    }
+    return array;
+}
+void print_array (int** _array, int _rows, int _cols) {
+    for (int i = 0; i < _rows; i++) {
+        for (int j = 0; j < _cols; j++) {
+            cout << _array[i][j] << " ";
+        }
+        cout << endl;
+    }
+}
+ 
+int main() {
+    setlocale(LC_ALL, "Rus");
+    srand(time(NULL));
+ 
+    int rows_A = 0;
+    int cols_A = 0;
+ 
+    int rows_B = 0;
+    int cols_B = 0;
+ 
+    int rows_C = 0;
+    int cols_C = 0;
+ 
+    int** array_A = new int* [rows_A];
+    int** array_B = new int* [rows_B];
+    int** array_C = new int* [rows_C];
+ 
+    cout << "Введите колличество строк для массива А: >";
+    cin >> rows_A;
+    cout << "Введите колличество столбцов для массива А: >";
+    cin >> cols_A;
+ 
+    array_A = creation_array(rows_A, cols_A);
+    cout << "Массив А: " << endl << endl;
+    print_array(array_A, rows_A, cols_A);
+ 
+    cout << endl;
+    cout << "Введите колличество строк для массива B: >";
+    cin >> rows_B;
+    cout << "Введите колличество столбцов для массива B: >";
+    cin >> cols_B;
+ 
+    array_B = creation_array(rows_B, cols_B);
+    cout << "Массив B: " << endl << endl;
+    print_array(array_B, rows_B, cols_B);
+ 
+    cout << endl;
+    cout << "Введите колличество строк для массива C: >";
+    cin >> rows_C;
+    cout << "Введите колличество столбцов для массива C: >";
+    cin >> cols_C;
+ 
+    array_C = creation_array(rows_C, cols_C);
+    cout << "Массив C: " << endl << endl;
+    print_array(array_C, rows_C, cols_C);
+ 
+    cout << endl << endl;
+    cout << "Массив общих элементов А, и С: ";
+    common_elements_A_C(array_A, array_C, cols_A, rows_A, cols_C, rows_C);
+ 
+    cout << endl << endl;
+    cout << "Массив уникальных элементов А,В,С: ";
+    unique_elements_A_B_C(array_A, array_B, array_C, cols_A, rows_A, cols_B, rows_B, cols_C, rows_C);
+ 
+ 
+    for (int i = 0; i < rows_A; i++) {
+        delete[]array_A[i];
+    }
+    delete[]array_A;
+ 
+    for (int i = 0; i < rows_B; i++) {
+        delete[]array_B[i];
+    }
+    delete[]array_B;
+ 
+    for (int i = 0; i < rows_C; i++) {
+        delete[]array_C[i];
+    }
+    delete[]array_C;
+ 
+ 
+    cout << endl << endl;
+    system("pause");
+    return 0;
+}

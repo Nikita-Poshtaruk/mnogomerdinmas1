@@ -1,0 +1,56 @@
+#include <iostream>
+#include <ctime>
+#include <cstring>
+ 
+using namespace std;
+char** createchar( int n, int m) {
+    char** arr = (char**)malloc(n * sizeof(char*));
+    for (int i = 0; i < n; i++) {
+        arr[i] = (char*)malloc(m * sizeof(char));
+    }
+    return arr;
+}
+//задача про сортивроку фамилий
+void ln(char**arr,int n,int m) {
+    char ch;
+    for (int i = 0; i < n; i++) {
+        
+        for (int j = 0; j < m; j++) {
+        
+            cin>>ch;
+            arr[i][j] = ch;
+        }
+        }
+    for (int i = 1; i < n; i++) {
+        for (int j = n - 1; j >= i; j--) {
+            if (strcmp(arr[j], arr[j - 1]) < 0) {
+                char *tmp = arr[j];
+                arr[j] = arr[j - 1];
+                arr[j - 1] = tmp;
+            }
+        }
+    }
+    }
+void print(char**arr, int n, int m) {
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
+            cout << arr[i][j];
+        }
+        cout << endl;
+    }
+    cout << endl;
+}
+ 
+ 
+int main()
+{
+   
+    int n = 5;
+    int m = 6;
+    char **arr=createchar(n,m);
+    ln(arr, n, m);
+    std::cout<<std::endl;
+    print(arr, n, m);
+ 
+    return 0;
+}
